@@ -10,7 +10,7 @@ const Scroll = ({ children }) => {
             left: "50%", 
             transform: "translateX(-50%)",
             borderRadius: "10px",
-            padding: "0 2em 2em 2em",
+            padding: "0 10vw 2em 10vw",
             marginTop: "2em"
             }}>
             { children }
