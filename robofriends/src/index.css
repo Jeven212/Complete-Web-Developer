@@ -5,6 +5,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url(blurry-gradient-haikei.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
 }
 
 code {
@@ -17,4 +21,17 @@ code {
   flex-wrap: wrap;
   justify-content: center;
   text-align: center;
+}
+
+.space {
+  height: 250px;
+}
+
+div.center h1 {
+  font-size: 50px;
+  margin-bottom: 1rem;
+}
+
+#search {
+  margin-bottom: 1em;
 }
