@@ -1,0 +1,30 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+    justify-items: center;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap; 
+}
+
+.card {
+    justify-content: center;
+    width: 15em;
+    height: 22em;
+    border-radius: 10px;
+}
+
+.text > * {
+    margin: 10px 15px 0 15px;
+    text-align: center;
+}
+
+
+img {
+    align-self: center;
+}
+

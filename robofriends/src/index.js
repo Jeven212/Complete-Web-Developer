@@ -1,13 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import "tachyons";
+import { robots } from './robots';
+import { CardList } from './Card';
+import SearchBox from './SearchBox';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <div>
+
+      <div className='center'>
+        <h1>Robofriends</h1>
+      </div>
+
+      <div className="center">
+        <SearchBox />
+      </div>
+
+      <CardList robots={ robots }/>
+      
+    </div>
   </React.StrictMode>
 );
 
