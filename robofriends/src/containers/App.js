@@ -1,4 +1,4 @@
-import React, { Component }from "react";
+import React, { Component } from "react";
 import { CardList } from '../components/Card';
 import SearchBox from '../components/SearchBox';
 import Scroll from '../components/Scroll';
@@ -55,7 +55,6 @@ class App extends Component {
                 </div>
             );
         }
-        
     }
 }
 
