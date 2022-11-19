@@ -24,9 +24,23 @@ class App extends Component {
         imgURL: "",
         box: {},
         route: "signin",
-        isSignedIn: false
+        isSignedIn: false,
+        user: {
+          id: undefined,
+          name: undefined,
+          email: undefined,
+          password: undefined,
+          entries: 0,
+          joined: undefined,
+        }
     };
   }
+
+componentDidMount() {
+  fetch("http://localhost:3000/")
+    .then(res => res.json())
+    .then(console.log)
+}
 
 calcFaceLoc = date => {
   const firstFace = date.outputs[0].data.regions[0].region_info.bounding_box;
@@ -43,16 +57,16 @@ calcFaceLoc = date => {
 
 displayFaceBox = box => {
   this.setState({box: box});
-  console.log(box);
+  // console.log(box);
 }
 
   onInputChange = event => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     this.setState({input: event.target.value});
   }
 
   onInputSubmit = () => {
-    console.log("BTN", this.state.input);
+    // console.log("BTN", this.state.input);
     this.setState({imgURL: this.state.input});
     //https://samples.clarifai.com/face-det.jpg
     app.models.predict(
@@ -62,33 +76,57 @@ displayFaceBox = box => {
           this.displayFaceBox(this.calcFaceLoc(response));
           // console.log(response);
           // console.log(response.outputs[0].data.regions[0].region_info.bounding_box);
+          this.updateEntries();
         })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err);
+        this.onInputSubmit();
+    })
+  }
+
+  updateEntries = () => {
+    const { id } = this.state.user;
+
+    fetch("http://localhost:3000/image", {
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+          id: id
+      })
+    })
+    .then(response => response.json())
+    .then(response => this.setState({user: {entries: response.entries}}))
+    .then(() => console.log(this.state.user))
+  }
+
+  updateUser = (user) => {
+    this.setState({user: user})
   }
 
   onRouteChange = (route) => {
     if (route === "signin" || route === "register"){
       this.setState({isSignedIn: false});
-    } else if (route === "home") {
+    } 
+    else if (route === "home") {
       this.setState({isSignedIn: true});
     }
     this.setState({route: route})
   }
 
   render() {
+    const { isSignedIn, route, user, imgURL, box } = this.state;
     return (
       <div className="">
-        <Navigation isSignedIn={this.state.isSignedIn} onRouteChange={this.onRouteChange} />
-        { this.state.route === "home" ? 
+        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+        { route === "home" ? 
             <div>
               <Logo />
-              <Rank />
+              <Rank entries={user.entries} name={user.name}/>
               <ImageLinkForm onInputChange={ this.onInputChange } onInputSubmit={ this.onInputSubmit }/>
               <ParticlesBG type='cobweb' color="#ffffff" bg={true}/>
-              <FaceRecognition imgURL={this.state.imgURL} box={this.state.box}/>
+              <FaceRecognition imgURL={imgURL} box={box}/>
             </div> : (
-            this.state.route === "signin" ? <SignIn onRouteChange={this.onRouteChange} /> :
-            <Register onRouteChange={this.onRouteChange} />
+            route === "signin" ? <SignIn updateUser={this.updateUser} onRouteChange={this.onRouteChange} /> :
+            <Register updateUser={this.updateUser} onRouteChange={this.onRouteChange} />
           )
         }
       </div>
